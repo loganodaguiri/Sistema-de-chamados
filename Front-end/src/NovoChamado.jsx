@@ -121,7 +121,13 @@ const NovoChamadoForm = () => {
     e.preventDefault();
     const token = localStorage.getItem("token");
 
-    if (!formData.cliente_id || !formData.categoria || !formData.prioridade || !formData.titulo || !formData.responsavel_id) {
+    if (
+      !formData.cliente_id ||
+      !formData.categoria ||
+      !formData.prioridade ||
+      !formData.titulo ||
+      !formData.responsavel_id
+    ) {
       alert("Preencha todos os campos obrigatórios!");
       return;
     }
@@ -172,7 +178,12 @@ const NovoChamadoForm = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           {/* Cliente */}
           <div>
-            <label htmlFor="cliente_id" className="block text-sm font-medium text-gray-700 mb-1">Cliente</label>
+            <label
+              htmlFor="cliente_id"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Cliente
+            </label>
             <select
               id="cliente_id"
               value={formData.cliente_id}
@@ -180,13 +191,22 @@ const NovoChamadoForm = () => {
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="">Selecione um cliente</option>
-              {clientes.map((c) => <option key={c.id} value={c.id}>{c.nome}</option>)}
+              {clientes.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.nome}
+                </option>
+              ))}
             </select>
           </div>
 
           {/* Categoria */}
           <div>
-            <label htmlFor="categoria" className="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
+            <label
+              htmlFor="categoria"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Categoria
+            </label>
             <select
               id="categoria"
               value={formData.categoria}
@@ -203,7 +223,12 @@ const NovoChamadoForm = () => {
 
           {/* Prioridade */}
           <div>
-            <label htmlFor="prioridade" className="block text-sm font-medium text-gray-700 mb-1">Prioridade</label>
+            <label
+              htmlFor="prioridade"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Prioridade
+            </label>
             <select
               id="prioridade"
               value={formData.prioridade}
@@ -219,7 +244,12 @@ const NovoChamadoForm = () => {
 
           {/* Responsável */}
           <div>
-            <label htmlFor="responsavel_id" className="block text-sm font-medium text-gray-700 mb-1">Responsável</label>
+            <label
+              htmlFor="responsavel_id"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Responsável
+            </label>
             <select
               id="responsavel_id"
               value={formData.responsavel_id}
@@ -227,7 +257,11 @@ const NovoChamadoForm = () => {
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="">Selecione um responsável</option>
-              {responsaveis.map((u) => <option key={u.id} value={u.id}>{u.nome}</option>)}
+              {responsaveis.map((u) => (
+                <option key={u.id} value={u.id}>
+                  {u.nome}
+                </option>
+              ))}
             </select>
           </div>
         </div>
@@ -235,7 +269,12 @@ const NovoChamadoForm = () => {
         {/* Status — só para edição e admins */}
         {id && usuario?.isAdmin && (
           <div className="mb-6">
-            <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+            <label
+              htmlFor="status"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Status
+            </label>
             <select
               id="status"
               value={formData.status}
@@ -252,7 +291,12 @@ const NovoChamadoForm = () => {
 
         {/* Título */}
         <div className="mb-6">
-          <label htmlFor="titulo" className="block text-sm font-medium text-gray-700 mb-1">Título</label>
+          <label
+            htmlFor="titulo"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
+            Título
+          </label>
           <input
             type="text"
             id="titulo"
@@ -265,7 +309,12 @@ const NovoChamadoForm = () => {
 
         {/* Descrição */}
         <div className="mb-6">
-          <label htmlFor="descricao" className="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
+          <label
+            htmlFor="descricao"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
+            Descrição
+          </label>
           <textarea
             id="descricao"
             value={formData.descricao}
@@ -278,17 +327,30 @@ const NovoChamadoForm = () => {
 
         {/* Upload de arquivo */}
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Anexo</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Anexo
+          </label>
           <div className="flex flex-col items-start gap-2">
             <label
               htmlFor="anexo"
               className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
             >
               <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                <i data-feather="upload" className="w-8 h-8 text-gray-400 mb-2"></i>
-                <p className="mb-2 text-sm text-gray-500">Clique para fazer upload</p>
-                <p className="text-xs text-gray-500">Apenas 1 arquivo: JPG, PNG, PDF (Max. 10MB)</p>
-                {arquivo && typeof arquivo === "object" && <p className="text-sm text-gray-700 mt-2">Arquivo selecionado: {arquivo.name}</p>}
+                <i
+                  data-feather="upload"
+                  className="w-8 h-8 text-gray-400 mb-2"
+                ></i>
+                <p className="mb-2 text-sm text-gray-500">
+                  Clique para fazer upload
+                </p>
+                <p className="text-xs text-gray-500">
+                  Apenas 1 arquivo: JPG, PNG, PDF (Max. 10MB)
+                </p>
+                {arquivo && typeof arquivo === "object" && (
+                  <p className="text-sm text-gray-700 mt-2">
+                    Arquivo selecionado: {arquivo.name}
+                  </p>
+                )}
               </div>
               <input
                 id="anexo"
@@ -310,9 +372,39 @@ const NovoChamadoForm = () => {
           </div>
         </div>
 
-        {/* Botão */}
-        <div className="flex justify-end">
-          <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center">
+        {/* Botões */}
+        <div className="flex justify-between mt-8">
+          <div className="flex gap-3">
+            {/* Botão de responder — apenas para admins */}
+            {id && usuario?.isAdmin && (
+              <button
+                type="button"
+                onClick={() => navigate(`/chamados/${id}/responder`)}
+                className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg flex items-center"
+              >
+                <i data-feather="message-square" className="w-4 h-4 mr-2"></i>
+                Responder Chamado
+              </button>
+            )}
+
+            {/* Botão de avaliar — qualquer usuário */}
+            {id && (
+              <button
+                type="button"
+                onClick={() => navigate(`/chamados/${id}/avaliar`)}
+                className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg flex items-center"
+              >
+                <i data-feather="star" className="w-4 h-4 mr-2"></i>
+                Avaliar Chamado
+              </button>
+            )}
+          </div>
+
+          {/* Botão principal */}
+          <button
+            type="submit"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center"
+          >
             <i data-feather="save" className="w-4 h-4 mr-2"></i>
             {id ? "Atualizar Chamado" : "Salvar Chamado"}
           </button>
