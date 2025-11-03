@@ -36,7 +36,7 @@ export default function LoginPage() {
           id: decoded.id,
           email: decoded.email,
           isAdmin: decoded.is_admin, // salva se é admin
-        })
+        }),
       );
 
       // redirecionar para página protegida

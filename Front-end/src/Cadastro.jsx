@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {Tool, User, Mail,Lock,} from "feather-icons-react";
+import { Tool, User, Mail, Lock } from "feather-icons-react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "tailwindcss/tailwind.css";
@@ -212,11 +212,11 @@ export default function Cadastro() {
 
               <div>
                 <button
-                    type="submit"
-                    disabled={!aceitouTermos}
-                    className={`w-full flex justify-center py-3 px-4 rounded-lg shadow-sm text-sm font-medium text-white transition 
+                  type="submit"
+                  disabled={!aceitouTermos}
+                  className={`w-full flex justify-center py-3 px-4 rounded-lg shadow-sm text-sm font-medium text-white transition 
                         ${
-                        aceitouTermos
+                          aceitouTermos
                             ? "bg-blue-600 hover:bg-blue-700 focus:ring-blue-500"
                             : "bg-gray-400 cursor-not-allowed"
                         }`}
@@ -229,9 +229,9 @@ export default function Cadastro() {
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
                 Já tem uma conta?{" "}
-                 <Link
-                    to="/"
-                    className="font-medium text-blue-600 hover:text-blue-500"
+                <Link
+                  to="/"
+                  className="font-medium text-blue-600 hover:text-blue-500"
                 >
                   Faça login
                 </Link>

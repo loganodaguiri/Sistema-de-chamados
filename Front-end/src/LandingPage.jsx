@@ -1,6 +1,17 @@
 import React, { useEffect } from "react";
 import Sidebar from "./Sidebar";
-import { Home, List, Users, Settings, Tool, AlertCircle, Clock, CheckCircle, Bell, Search } from "feather-icons-react";
+import {
+  Home,
+  List,
+  Users,
+  Settings,
+  Tool,
+  AlertCircle,
+  Clock,
+  CheckCircle,
+  Bell,
+  Search,
+} from "feather-icons-react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "tailwindcss/tailwind.css";
@@ -33,7 +44,12 @@ export default function LandingPage() {
             <Card title="Dashboard" value="24" color="blue" Icon={Home} />
             <Card title="Chamados" value="12" color="yellow" Icon={List} />
             <Card title="Clientes" value="36" color="purple" Icon={Users} />
-            <Card title="Configurações" value="3" color="green" Icon={Settings} />
+            <Card
+              title="Configurações"
+              value="3"
+              color="green"
+              Icon={Settings}
+            />
           </div>
 
           {/* Chamados Recentes */}
@@ -41,8 +57,14 @@ export default function LandingPage() {
 
           {/* Charts / Estatísticas */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-            <ChartCard title="Chamados por Status" src="http://static.photos/abstract/640x360/1" />
-            <ChartCard title="Chamados por Mês" src="http://static.photos/abstract/640x360/2" />
+            <ChartCard
+              title="Chamados por Status"
+              src="http://static.photos/abstract/640x360/1"
+            />
+            <ChartCard
+              title="Chamados por Mês"
+              src="http://static.photos/abstract/640x360/2"
+            />
           </div>
         </main>
       </div>
@@ -69,23 +91,51 @@ const Card = ({ title, value, color, Icon }) => (
 // Componente TicketsTable
 const TicketsTable = () => {
   const chamados = [
-    { id: "#4567", titulo: "Problema com impressora", cliente: "Empresa A", status: "Em andamento", cor: "yellow", data: "10/05/2023" },
-    { id: "#4566", titulo: "Acesso ao sistema", cliente: "Empresa B", status: "Resolvido", cor: "green", data: "09/05/2023" },
-    { id: "#4565", titulo: "Rede lenta", cliente: "Empresa C", status: "Aberto", cor: "blue", data: "08/05/2023" },
+    {
+      id: "#4567",
+      titulo: "Problema com impressora",
+      cliente: "Empresa A",
+      status: "Em andamento",
+      cor: "yellow",
+      data: "10/05/2023",
+    },
+    {
+      id: "#4566",
+      titulo: "Acesso ao sistema",
+      cliente: "Empresa B",
+      status: "Resolvido",
+      cor: "green",
+      data: "09/05/2023",
+    },
+    {
+      id: "#4565",
+      titulo: "Rede lenta",
+      cliente: "Empresa C",
+      status: "Aberto",
+      cor: "blue",
+      data: "08/05/2023",
+    },
   ];
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-6 mb-8" data-aos="fade-up">
       <div className="flex justify-between items-center mb-6">
-        <h3 className="text-lg font-semibold text-gray-800">Chamados Recentes</h3>
-        <a href="#" className="text-sm text-blue-600 hover:text-blue-500">Ver todos</a>
+        <h3 className="text-lg font-semibold text-gray-800">
+          Chamados Recentes
+        </h3>
+        <a href="#" className="text-sm text-blue-600 hover:text-blue-500">
+          Ver todos
+        </a>
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
               {["ID", "Título", "Cliente", "Status", "Data"].map((th) => (
-                <th key={th} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th
+                  key={th}
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
                   {th}
                 </th>
               ))}
@@ -94,15 +144,25 @@ const TicketsTable = () => {
           <tbody className="bg-white divide-y divide-gray-200">
             {chamados.map((c) => (
               <tr key={c.id}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{c.id}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{c.titulo}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{c.cliente}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  {c.id}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {c.titulo}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {c.cliente}
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-${c.cor}-100 text-${c.cor}-800`}>
+                  <span
+                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-${c.cor}-100 text-${c.cor}-800`}
+                  >
                     {c.status}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{c.data}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {c.data}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -117,7 +177,11 @@ const ChartCard = ({ title, src }) => (
   <div className="bg-white rounded-lg shadow-sm p-6" data-aos="fade-up">
     <h3 className="text-lg font-semibold text-gray-800 mb-4">{title}</h3>
     <div className="h-64">
-      <img src={src} alt={title} className="w-full h-full object-cover rounded" />
+      <img
+        src={src}
+        alt={title}
+        className="w-full h-full object-cover rounded"
+      />
     </div>
   </div>
 );

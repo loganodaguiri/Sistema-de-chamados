@@ -1,7 +1,10 @@
+// NovoChamadoPage.jsx
 import React, { useEffect, useState } from "react";
 import feather from "feather-icons";
 import { useParams, useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
+import ResponderChamadoModal from "./ResponderChamadoModal";
+import AvaliarChamadoModal from "./AvaliarChamadoModal";
 
 const Header = () => (
   <header className="bg-white border-b border-gray-200 p-4">
@@ -27,6 +30,9 @@ const NovoChamadoForm = () => {
   const [clientes, setClientes] = useState([]);
   const [responsaveis, setResponsaveis] = useState([]);
   const [usuario, setUsuario] = useState(null);
+  const [isResponderModalOpen, setResponderModalOpen] = useState(false);
+  const [isAvaliarModalOpen, setAvaliarModalOpen] = useState(false);
+
   const [formData, setFormData] = useState({
     cliente_id: "",
     categoria: "",
@@ -41,7 +47,7 @@ const NovoChamadoForm = () => {
     feather.replace();
     const token = localStorage.getItem("token");
 
-    // Pega info do usuário logado do localStorage
+    // Usuário logado
     const usuarioLogado = JSON.parse(localStorage.getItem("usuario") || "{}");
     setUsuario({ isAdmin: usuarioLogado.isAdmin });
 
@@ -59,7 +65,7 @@ const NovoChamadoForm = () => {
     };
     fetchClientes();
 
-    // Buscar usuários administradores
+    // Buscar responsáveis (admins)
     const fetchResponsaveis = async () => {
       try {
         const res = await fetch("http://localhost:3000/users/admins", {
@@ -140,11 +146,7 @@ const NovoChamadoForm = () => {
     data.append("titulo", formData.titulo);
     data.append("descricao", formData.descricao || "");
     if (arquivo) data.append("anexo", arquivo);
-
-    // Sempre envia status se estiver em edição
-    if (id) {
-      data.append("status", formData.status);
-    }
+    if (id) data.append("status", formData.status);
 
     try {
       const url = id
@@ -266,7 +268,7 @@ const NovoChamadoForm = () => {
           </div>
         </div>
 
-        {/* Status — só para edição e admins */}
+        {/* Status — apenas para edição e admins */}
         {id && usuario?.isAdmin && (
           <div className="mb-6">
             <label
@@ -375,28 +377,44 @@ const NovoChamadoForm = () => {
         {/* Botões */}
         <div className="flex justify-between mt-8">
           <div className="flex gap-3">
-            {/* Botão de responder — apenas para admins */}
+            {/* Botão de responder — apenas admins */}
             {id && usuario?.isAdmin && (
-              <button
-                type="button"
-                onClick={() => navigate(`/chamados/${id}/responder`)}
-                className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg flex items-center"
-              >
-                <i data-feather="message-square" className="w-4 h-4 mr-2"></i>
-                Responder Chamado
-              </button>
+              <>
+                <button
+                  type="button"
+                  onClick={() => setResponderModalOpen(true)}
+                  className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg flex items-center"
+                >
+                  <i data-feather="message-square" className="w-4 h-4 mr-2"></i>
+                  Responder Chamado
+                </button>
+
+                <ResponderChamadoModal
+                  isOpen={isResponderModalOpen}
+                  onClose={() => setResponderModalOpen(false)}
+                  chamadoId={id}
+                />
+              </>
             )}
 
             {/* Botão de avaliar — qualquer usuário */}
             {id && (
-              <button
-                type="button"
-                onClick={() => navigate(`/chamados/${id}/avaliar`)}
-                className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg flex items-center"
-              >
-                <i data-feather="star" className="w-4 h-4 mr-2"></i>
-                Avaliar Chamado
-              </button>
+              <>
+                <button
+                  type="button"
+                  onClick={() => setAvaliarModalOpen(true)}
+                  className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg flex items-center"
+                >
+                  <i data-feather="star" className="w-4 h-4 mr-2"></i>
+                  Avaliar Chamado
+                </button>
+
+                <AvaliarChamadoModal
+                  isOpen={isAvaliarModalOpen}
+                  onClose={() => setAvaliarModalOpen(false)}
+                  chamadoId={id}
+                />
+              </>
             )}
           </div>
 

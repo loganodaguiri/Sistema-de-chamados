@@ -34,15 +34,29 @@ const ClientRow = ({ client, onEdit, onDelete }) => {
 
   return (
     <tr>
-      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{client.nome}</td>
-      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{client.email}</td>
-      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{client.telefone}</td>
-      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{client.empresa}</td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+        {client.nome}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        {client.email}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        {client.telefone}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        {client.empresa}
+      </td>
       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-        <button onClick={() => onEdit(client)} className="text-green-600 hover:text-green-900">
+        <button
+          onClick={() => onEdit(client)}
+          className="text-green-600 hover:text-green-900"
+        >
           <i data-feather="edit" className="w-4 h-4"></i>
         </button>
-        <button onClick={() => onDelete(client.id)} className="text-red-600 hover:text-red-900">
+        <button
+          onClick={() => onDelete(client.id)}
+          className="text-red-600 hover:text-red-900"
+        >
           <i data-feather="trash-2" className="w-4 h-4"></i>
         </button>
       </td>
@@ -107,16 +121,31 @@ const ClientsTable = () => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Telefone</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Empresa</th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Nome
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Email
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Telefone
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Empresa
+              </th>
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Ações
+              </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {currentClients.map((client) => (
-              <ClientRow key={client.id} client={client} onEdit={handleEdit} onDelete={handleDelete} />
+              <ClientRow
+                key={client.id}
+                client={client}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
             ))}
           </tbody>
         </table>

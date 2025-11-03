@@ -4,10 +4,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "./App";
 import LandingPage from "./LandingPage";
 import Cadastro from "./Cadastro";
-import Chamados from "./Chamados"
-import NovoChamado from "./NovoChamado"
-import Clientes from "./Clientes"
-import NovoCliente from "./NovoCliente"
+import Chamados from "./Chamados";
+import NovoChamado from "./NovoChamado";
+import Clientes from "./Clientes";
+import NovoCliente from "./NovoCliente";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -23,5 +23,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/NovoCliente/:id?" element={<NovoCliente />} />
       </Routes>
     </BrowserRouter>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

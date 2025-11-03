@@ -42,7 +42,7 @@ const ClienteForm = () => {
     cidade: "",
     estado: "",
     cep: "",
-    observacoes: ""
+    observacoes: "",
   });
 
   // Buscar cliente se houver id
@@ -69,7 +69,7 @@ const ClienteForm = () => {
           cidade: data.cidade || "",
           estado: data.estado || "",
           cep: data.cep || "",
-          observacoes: data.observacoes || ""
+          observacoes: data.observacoes || "",
         });
       } catch (err) {
         console.error(err);
@@ -97,7 +97,7 @@ const ClienteForm = () => {
           ...prev,
           endereco: data.logradouro || "",
           cidade: data.localidade || "",
-          estado: data.uf || ""
+          estado: data.uf || "",
         }));
       }
     } catch (err) {
@@ -118,9 +118,9 @@ const ClienteForm = () => {
         method,
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
 
       if (!res.ok) {
@@ -130,7 +130,9 @@ const ClienteForm = () => {
       }
 
       const data = await res.json();
-      alert(id ? "Cliente atualizado com sucesso!" : "Cliente criado com sucesso!");
+      alert(
+        id ? "Cliente atualizado com sucesso!" : "Cliente criado com sucesso!",
+      );
       console.log(data.cliente);
 
       if (!id) {
@@ -146,7 +148,7 @@ const ClienteForm = () => {
           cidade: "",
           estado: "",
           cep: "",
-          observacoes: ""
+          observacoes: "",
         });
       }
     } catch (err) {
@@ -160,7 +162,10 @@ const ClienteForm = () => {
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
-            <label htmlFor="cpf" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="cpf"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               CPF
             </label>
             <IMaskInput
@@ -174,7 +179,10 @@ const ClienteForm = () => {
             />
           </div>
           <div>
-            <label htmlFor="nome" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="nome"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Nome Completo
             </label>
             <input
@@ -188,7 +196,10 @@ const ClienteForm = () => {
             />
           </div>
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Email
             </label>
             <input
@@ -201,20 +212,28 @@ const ClienteForm = () => {
             />
           </div>
           <div>
-            <label htmlFor="telefone" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="telefone"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Telefone
             </label>
             <IMaskInput
               mask="(00) 00000-0000"
               value={formData.telefone}
-              onAccept={(value) => setFormData({ ...formData, telefone: value })}
+              onAccept={(value) =>
+                setFormData({ ...formData, telefone: value })
+              }
               id="telefone"
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholder="(00) 00000-0000"
             />
           </div>
           <div>
-            <label htmlFor="empresa" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="empresa"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Empresa
             </label>
             <input
@@ -227,7 +246,10 @@ const ClienteForm = () => {
             />
           </div>
           <div>
-            <label htmlFor="cargo" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="cargo"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Cargo
             </label>
             <input
@@ -244,7 +266,10 @@ const ClienteForm = () => {
         {/* CEP e Endereço */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <div>
-            <label htmlFor="cep" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="cep"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               CEP
             </label>
             <IMaskInput
@@ -259,7 +284,10 @@ const ClienteForm = () => {
           </div>
 
           <div>
-            <label htmlFor="endereco" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="endereco"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Endereço
             </label>
             <input
@@ -273,7 +301,10 @@ const ClienteForm = () => {
           </div>
 
           <div>
-            <label htmlFor="cidade" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="cidade"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Cidade
             </label>
             <input
@@ -287,7 +318,10 @@ const ClienteForm = () => {
           </div>
 
           <div>
-            <label htmlFor="estado" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="estado"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Estado
             </label>
             <input
@@ -302,7 +336,10 @@ const ClienteForm = () => {
         </div>
 
         <div className="mb-6">
-          <label htmlFor="observacoes" className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="observacoes"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             Observações
           </label>
           <textarea

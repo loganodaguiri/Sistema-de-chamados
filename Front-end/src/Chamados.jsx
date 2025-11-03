@@ -1,7 +1,9 @@
+// ChamadosPage.jsx
 import React, { useEffect, useState } from "react";
 import feather from "feather-icons";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "./Sidebar"; // Componente Sidebar importado
+import Sidebar from "./Sidebar";
+import ResponderChamadoModal from "./ResponderChamadoModal";
 
 // Header da página
 const Header = () => {
@@ -29,80 +31,41 @@ const Header = () => {
   );
 };
 
-// Filtros da página
-const Filters = () => (
-  <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-    <div className="flex flex-wrap items-center gap-4">
-      <div>
-        <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-        <select
-          id="status"
-          className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        >
-          <option value="all">Todos</option>
-          <option value="open">Abertos</option>
-          <option value="progress">Em andamento</option>
-          <option value="closed">Resolvidos</option>
-        </select>
-      </div>
-      <div>
-        <label htmlFor="priority" className="block text-sm font-medium text-gray-700 mb-1">Prioridade</label>
-        <select
-          id="priority"
-          className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        >
-          <option value="all">Todas</option>
-          <option value="high">Alta</option>
-          <option value="medium">Média</option>
-          <option value="low">Baixa</option>
-        </select>
-      </div>
-      <div>
-        <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">Período</label>
-        <select
-          id="date"
-          className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        >
-          <option value="7days">Últimos 7 dias</option>
-          <option value="30days">Últimos 30 dias</option>
-          <option value="all">Todos</option>
-        </select>
-      </div>
-      <div className="ml-auto">
-        <button className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-lg flex items-center">
-          <i data-feather="filter" className="w-4 h-4 mr-2"></i>
-          Aplicar Filtros
-        </button>
-      </div>
-    </div>
-  </div>
-);
-
 // Tabela de tickets
 const TicketsTable = () => {
   const [tickets, setTickets] = useState([]);
+  const [isResponderModalOpen, setResponderModalOpen] = useState(false);
+  const [selectedTicketId, setSelectedTicketId] = useState(null);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
   const getPriorityColor = (priority) => {
     switch (priority?.toLowerCase()) {
-      case "alta": return "bg-red-100 text-red-800";
-      case "media": return "bg-yellow-100 text-yellow-800";
-      case "baixa": return "bg-blue-100 text-blue-800";
-      default: return "";
+      case "alta":
+        return "bg-red-100 text-red-800";
+      case "media":
+        return "bg-yellow-100 text-yellow-800";
+      case "baixa":
+        return "bg-blue-100 text-blue-800";
+      default:
+        return "";
     }
   };
 
   const getStatusColor = (status) => {
     switch (status?.toLowerCase()) {
-      case "aberto": return "bg-blue-100 text-blue-800";
-      case "em andamento": return "bg-yellow-100 text-yellow-800";
-      case "resolvido": return "bg-green-100 text-green-800";
-      default: return "";
+      case "aberto":
+        return "bg-blue-100 text-blue-800";
+      case "em andamento":
+        return "bg-yellow-100 text-yellow-800";
+      case "resolvido":
+        return "bg-green-100 text-green-800";
+      default:
+        return "";
     }
   };
 
-  // Função para buscar tickets
+  // Buscar tickets
   const fetchTickets = async () => {
     try {
       const res = await fetch("http://localhost:3000/chamados", {
@@ -118,12 +81,11 @@ const TicketsTable = () => {
   useEffect(() => {
     fetchTickets();
   }, [token]);
-
   useEffect(() => {
-    feather.replace(); // Atualiza os ícones após carregar tickets
+    feather.replace();
   }, [tickets]);
 
-  // Função para excluir ticket
+  // Excluir ticket
   const handleDelete = async (id) => {
     if (!window.confirm("Deseja realmente excluir este chamado?")) return;
     try {
@@ -132,15 +94,28 @@ const TicketsTable = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
-        setTickets(tickets.filter(ticket => ticket.id !== id));
+        setTickets(tickets.filter((ticket) => ticket.id !== id));
       } else {
         const errData = await res.json();
-        alert("Erro ao excluir chamado: " + (errData.message || res.statusText));
+        alert(
+          "Erro ao excluir chamado: " + (errData.message || res.statusText),
+        );
       }
     } catch (err) {
       console.error("Erro ao excluir chamado:", err);
       alert("Erro ao excluir chamado");
     }
+  };
+
+  // Abrir modal
+  const handleOpenModal = (id) => {
+    setSelectedTicketId(id);
+    setResponderModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setResponderModalOpen(false);
+    setSelectedTicketId(null);
   };
 
   return (
@@ -149,8 +124,19 @@ const TicketsTable = () => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              {["ID", "Título", "Cliente", "Prioridade", "Status", "Data", "Ações"].map((th) => (
-                <th key={th} className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${th === "Ações" ? "text-right" : ""}`}>
+              {[
+                "ID",
+                "Título",
+                "Cliente",
+                "Prioridade",
+                "Status",
+                "Data",
+                "Ações",
+              ].map((th) => (
+                <th
+                  key={th}
+                  className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${th === "Ações" ? "text-right" : ""}`}
+                >
                   {th}
                 </th>
               ))}
@@ -159,25 +145,42 @@ const TicketsTable = () => {
           <tbody className="bg-white divide-y divide-gray-200">
             {tickets.map((ticket) => (
               <tr key={ticket.id}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{ticket.id}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">{ticket.titulo}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{ticket.cliente_nome}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  {ticket.id}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
+                  {ticket.titulo}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {ticket.cliente_nome}
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getPriorityColor(ticket.prioridade)}`}>
+                  <span
+                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getPriorityColor(ticket.prioridade)}`}
+                  >
                     {ticket.prioridade}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(ticket.status)}`}>
+                  <span
+                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(ticket.status)}`}
+                  >
                     {ticket.status}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {ticket.data_criacao ? new Date(ticket.data_criacao).toLocaleDateString() : "-"}
+                  {ticket.data_criacao
+                    ? new Date(ticket.data_criacao).toLocaleDateString()
+                    : "-"}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <div className="flex justify-end space-x-3">
-                    <a href="#" className="text-blue-600 hover:text-blue-900"><i data-feather="eye"></i></a>
+                    <button
+                      className="text-blue-600 hover:text-blue-900"
+                      onClick={() => handleOpenModal(ticket.id)}
+                    >
+                      <i data-feather="eye"></i>
+                    </button>
                     <button
                       className="text-green-600 hover:text-green-900"
                       onClick={() => navigate(`/NovoChamado/${ticket.id}`)}
@@ -197,6 +200,13 @@ const TicketsTable = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Modal */}
+      <ResponderChamadoModal
+        isOpen={isResponderModalOpen}
+        onClose={handleCloseModal}
+        chamadoId={selectedTicketId}
+      />
     </div>
   );
 };
@@ -213,7 +223,6 @@ const ChamadosPage = () => {
       <div className="flex-1 overflow-auto">
         <Header />
         <main className="p-6">
-          <Filters />
           <TicketsTable />
         </main>
       </div>
