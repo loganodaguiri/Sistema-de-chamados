@@ -146,10 +146,68 @@ const excluirChamadoService = async (id) => {
     return result.rows[0];
 };
 
+const criarRespostaService = async (chamadoId, usuarioId, mensagem) => {
+    const chamado = await getChamadoPorIdService(chamadoId);
+    if (!chamado) return null;
+
+    const query = `
+        INSERT INTO respostas_chamados (
+            chamado_id,
+            usuario_id,
+            mensagem,
+            data_criacao
+        )
+        VALUES ($1, $2, $3, NOW())
+        RETURNING *;
+    `;
+    const values = [chamadoId, usuarioId, mensagem];
+    const result = await db.query(query, values);
+    return result.rows[0];
+};
+
+const listarRespostasService = async (chamadoId) => {
+    // Retorna todas as respostas de um chamado, incluindo nome do usuário
+    const respostas = await db.query(
+        `SELECT r.id, r.mensagem, r.data_criacao AS "createdAt", u.nome AS "usuarioNome"
+         FROM respostas_chamados r
+                  JOIN usuarios u ON r.usuario_id = u.id
+         WHERE r.chamado_id = $1
+         ORDER BY r.data_criacao ASC`,
+        [chamadoId]
+    );
+    return respostas.rows;
+};
+
+const salvarAvaliacaoService = async ({ chamadoId, usuarioId, comentario, estrelas }) => {
+    const query = `
+        INSERT INTO chamado_avaliacoes (chamado_id, usuario_id, comentario, estrelas, data_criacao)
+        VALUES ($1, $2, $3, $4, NOW())
+            RETURNING *;
+    `;
+
+    const values = [chamadoId, usuarioId, comentario, estrelas];
+    const result = await db.query(query, values);
+    return result.rows[0];
+};
+
+const buscarAvaliacaoService = async (chamadoId) => {
+    const query = `
+    SELECT * FROM chamado_avaliacoes
+    WHERE chamado_id = $1
+    LIMIT 1;
+  `;
+    const result = await db.query(query, [chamadoId]);
+    return result.rows[0];
+};
+
 module.exports = {
     criarChamadoService,
     getChamadosService,
     getChamadoPorIdService,
     atualizarChamadoService,
-    excluirChamadoService
+    excluirChamadoService,
+    criarRespostaService,
+    listarRespostasService,
+    salvarAvaliacaoService,
+    buscarAvaliacaoService
 };
