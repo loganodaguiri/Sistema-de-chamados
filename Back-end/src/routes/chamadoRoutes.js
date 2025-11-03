@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { criarChamado, getChamados, getChamadoPorId, atualizarChamado, excluirChamado } = require('../controllers/chamadosController');
+const { criarChamado, getChamados, getChamadoPorId, atualizarChamado, excluirChamado, criarResposta, listarRespostas, avaliarChamado, buscarAvaliacao } = require('../controllers/chamadosController');
 const authenticateToken = require('../middlewares/authMiddleware');
 const multer = require('multer');
 const path = require('path');
@@ -21,5 +21,9 @@ router.get('/', authenticateToken, getChamados);
 router.get('/:id', authenticateToken, getChamadoPorId);
 router.put("/:id", authenticateToken, upload.single("anexo"), atualizarChamado);
 router.delete('/:id', authenticateToken, excluirChamado);
+router.post('/:id/respostas', authenticateToken, criarResposta);
+router.use('/:chamadoId/respostas', authenticateToken, listarRespostas);
+router.post("/:id/avaliar", authenticateToken, avaliarChamado);
+router.get("/:id/avaliacao", authenticateToken, buscarAvaliacao);
 
 module.exports = router;
