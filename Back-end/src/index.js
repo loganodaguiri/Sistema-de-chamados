@@ -7,6 +7,7 @@ const db = require('./db');
 const userRoutes = require('./routes/userRoutes');
 const clientesRoutes = require('./routes/clientesRoutes');
 const chamadosRoutes = require('./routes/chamadoRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use('/users', userRoutes);
 app.use('/clientes', clientesRoutes);
 app.use('/chamados', chamadosRoutes);
+app.use('/dashboard', dashboardRoutes)
 
 // função para testar conexão com o banco
 async function testDBConnection() {

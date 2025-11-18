@@ -1,11 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Home, List, Users, Tool, LogOut } from "feather-icons-react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  const [user, setUser] = useState({ email: "", id: null });
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+
+        setUser({
+          email: payload.email,
+          id: payload.id,
+        });
+      } catch (error) {
+        console.error("Erro ao decodificar token:", error);
+      }
+    }
+  }, []);
 
   const handleLogout = () => {
+    localStorage.removeItem("token");
     navigate("/");
   };
 
@@ -48,19 +67,22 @@ const Sidebar = () => {
         </ul>
       </nav>
 
-      {/* Seção do usuário + botão de logout */}
+      {/* Usuário logado */}
       <div className="p-4 border-t border-gray-200">
         <div className="flex items-center mb-4">
           <img
-            src="http://static.photos/people/200x200/1"
+            src="https://api.dicebear.com/7.x/initials/svg?seed=User"
             alt="User"
             className="w-8 h-8 rounded-full"
           />
           <div className="ml-3">
-            <p className="text-sm font-medium text-gray-800">Admin</p>
-            <p className="text-xs text-gray-500">admin@serviti.com</p>
+            <p className="text-sm font-medium text-gray-800">
+              {user.email?.split("@")[0] || "Usuário"}
+            </p>
+            <p className="text-xs text-gray-500">{user.email || "email@dominio.com"}</p>
           </div>
         </div>
+
         <button
           onClick={handleLogout}
           className="w-full flex items-center justify-center p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
